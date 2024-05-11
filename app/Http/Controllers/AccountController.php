@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,7 +17,7 @@ class AccountController extends Controller
     public function userRegister( Request $request ){
         $validator = Validator::make($request->all(), [
             'name' => 'required | min:3',
-            'email' => 'required|email',
+            'email' => 'required|email | unique:users',
             'password' => 'required| confirmed|min:8',
             'password_confirmation' => 'required',
         ]);
@@ -37,5 +38,56 @@ class AccountController extends Controller
 
     public function showLogin(){
         return view('account.login');
+    }
+
+    public function userAuthenticate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'email' => 'required | email',
+            'password' => 'required | min:8'
+        ]);        
+
+        if ($validator->fails()) {
+            # code...
+            return redirect()->route('account.showLogin')->withErrors($validator)->withInput();
+        }
+        
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            return redirect()->route('account.showProfile');
+        }else{
+            return redirect()->route('account.showLogin')->with('error','Either email/password is incorrect');
+        }
+    }
+
+    public function showProfile(){
+        $user = User::find(Auth::user()->id);
+        // dd($user);
+
+        return view('account.profile',[
+            'user' => $user,
+        ]);
+    }
+
+    public function userProfileUpdate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|min:3',
+            'email' => 'required | email |unique:users,email,'.Auth::user()->id.',id'
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return redirect()->route('account.showProfile')->withInput()->withErrors($validator);
+        }
+
+        $user = User::find(Auth::user()->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()->route('account.showProfile')->with('success','Profile updated successfully');
+    }
+
+    public function logOut(){
+        Auth::logout();
+        return redirect()->route('account.showLogin');
     }
 }
