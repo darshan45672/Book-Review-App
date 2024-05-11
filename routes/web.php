@@ -11,3 +11,4 @@ Route::get('/register', [AccountController::class, 'showRegister'])->name('accou
 Route::post('/register', [AccountController::class, 'userRegister'])->name('account.userRegister');
 
 Route::get('/login', [AccountController::class, 'showLogin'])->name('account.showLogin');
+Route::post('/login', [AccountController::class, 'userAuthenticate'])->name('account.userAuthenticate');

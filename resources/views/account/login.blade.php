@@ -10,8 +10,13 @@
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {{ Session::get('success') }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    
+                    </div>  
+                @endif
+                @if (Session::has('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ Session::get('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>  
                 @endif
                 <div class="card border border-light-subtle rounded-4">
                     <div class="card-body p-3 p-md-4 p-xl-5">
@@ -22,18 +27,25 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="profile.html">
+                        <form action="{{ route('account.userAuthenticate') }}" method="POST">
+                            @csrf
                             <div class="row gy-3 overflow-hidden">
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
-                                        <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com">
+                                        <input type="text" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="example@example.com">
                                         <label for="email" class="form-label">Email</label>
+                                        @error('email')
+                                            <p class="invalid-feedback"> {{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating mb-3">
-                                        <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password">
+                                        <input type="password" value="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror" name="password" id="password" value="" placeholder="Password">
                                         <label for="password" class="form-label">Password</label>
+                                        @error('password')
+                                            <p class="invalid-feedback"> {{ $message }}</p>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -47,7 +59,7 @@
                             <div class="col-12">
                                 <hr class="mt-5 mb-4 border-secondary-subtle">
                                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-center">
-                                    <a href="register.html" class="link-secondary text-decoration-none">Create new account</a>
+                                    <a href="{{ route('account.showRegister') }}" class="link-secondary text-decoration-none">Create new account</a>
                                 </div>
                             </div>
                         </div>
