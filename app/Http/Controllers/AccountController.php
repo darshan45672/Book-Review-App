@@ -52,9 +52,18 @@ class AccountController extends Controller
         }
         
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-
+            return redirect()->route('account.showProfile');
         }else{
             return redirect()->route('account.showLogin')->with('error','Either email/password is incorrect');
         }
+    }
+
+    public function showProfile(){
+        return view('account.profile');
+    }
+
+    public function logOut(){
+        Auth::logout();
+        return redirect()->route('account.showLogin');
     }
 }
