@@ -17,5 +17,6 @@ Route::group(['prefix' => 'user'], function () {
     });
     Route::group(['middleware' => 'auth'], function () {
         Route::get('/profile', [AccountController::class, 'showProfile'])->name('account.showProfile');
+        Route::get('/logout', [AccountController::class, 'logOut'])->name('account.logOut');
     });
 });

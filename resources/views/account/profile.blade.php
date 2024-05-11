@@ -42,7 +42,7 @@
                             <a href="change-password.html">Change Password</a>
                         </li> 
                         <li class="nav-item">
-                            <a href="login.html">Logout</a>
+                            <a href="{{ route('account.logOut') }}">Logout</a>
                         </li>                           
                     </ul>
                 </div>
