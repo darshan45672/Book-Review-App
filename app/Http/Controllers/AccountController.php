@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class AccountController extends Controller
 {
@@ -76,7 +78,7 @@ class AccountController extends Controller
     {
 
         // dd($request->image);
-        
+
         if (!empty($request->image)) {
             # code...
             $rules = [
@@ -84,7 +86,7 @@ class AccountController extends Controller
                 'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id',
                 'image' => 'mimes:jpeg,jpg,png,gif|max:2048'
             ];
-        }else{
+        } else {
             $rules = [
                 'name' => 'required|min:3',
                 'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id'
@@ -112,6 +114,12 @@ class AccountController extends Controller
             $image->move(public_path('userUploads/profilePicture'), $imageName);
             $user->image = $imageName;
             $user->save();
+
+            $manager = new ImageManager(Driver::class);
+            $img = $manager->read(public_path('userUploads/profilePicture/'.$imageName));
+            $img->cover(150, 150);
+            // dd($img);
+            $img->save(public_path('userUploads/profilePicture/'.$imageName));
         }
 
         return redirect()->route('account.showProfile')->with('success', 'Profile updated successfully');

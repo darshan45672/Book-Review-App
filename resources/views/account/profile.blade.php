@@ -12,10 +12,13 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center mb-3">
-                        <img src="images/profile-img-1.jpg" class="img-fluid rounded-circle" alt="Luna John">
+                        @if (Auth::user()->image != "")
+                            <img src="{{ asset('userUploads/profilePicture/'.Auth::user()->image) }}" class="img-fluid rounded-circle" alt="{{ Auth::user()->name }}" style="width: 150px; height: 150px;"> 
+                        @endif
+                        {{-- <img src="images/profile-img-1.jpg" class="img-fluid rounded-circle" alt="Luna John"> --}}
                     </div>
                     <div class="h5 text-center">
-                        <strong>{{ $user->email }}</strong>
+                        <strong>{{ $user->name }}</strong>
                         <p class="h6 mt-2 text-muted">5 Reviews</p>
                     </div>
                 </div>
