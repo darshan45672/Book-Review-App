@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
-    public function showRegister(){
+    public function showRegister()
+    {
         return view('account.register');
     }
 
-    public function userRegister( Request $request ){
+    public function userRegister(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required | min:3',
             'email' => 'required|email | unique:users',
@@ -36,42 +38,61 @@ class AccountController extends Controller
         return redirect()->route('account.showLogin')->with('success', 'User registered successfully');
     }
 
-    public function showLogin(){
+    public function showLogin()
+    {
         return view('account.login');
     }
 
-    public function userAuthenticate(Request $request){
-        $validator = Validator::make($request->all(),[
+    public function userAuthenticate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
             'email' => 'required | email',
             'password' => 'required | min:8'
-        ]);        
+        ]);
 
         if ($validator->fails()) {
             # code...
             return redirect()->route('account.showLogin')->withErrors($validator)->withInput();
         }
-        
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return redirect()->route('account.showProfile');
-        }else{
-            return redirect()->route('account.showLogin')->with('error','Either email/password is incorrect');
+        } else {
+            return redirect()->route('account.showLogin')->with('error', 'Either email/password is incorrect');
         }
     }
 
-    public function showProfile(){
+    public function showProfile()
+    {
         $user = User::find(Auth::user()->id);
         // dd($user);
 
-        return view('account.profile',[
+        return view('account.profile', [
             'user' => $user,
         ]);
     }
 
-    public function userProfileUpdate(Request $request){
-        $validator = Validator::make($request->all(),[
-            'name' => 'required|min:3',
-            'email' => 'required | email |unique:users,email,'.Auth::user()->id.',id'
-        ]);
+    public function userProfileUpdate(Request $request)
+    {
+
+        // dd($request->image);
+        
+        if (!empty($request->image)) {
+            # code...
+            $rules = [
+                'name' => 'required|min:3',
+                'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id',
+                'image' => 'mimes:jpeg,jpg,png,gif|max:2048'
+            ];
+        }else{
+            $rules = [
+                'name' => 'required|min:3',
+                'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id'
+            ];
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+        // dd($validator);
 
         if ($validator->fails()) {
             # code...
@@ -83,10 +104,21 @@ class AccountController extends Controller
         $user->email = $request->email;
         $user->save();
 
-        return redirect()->route('account.showProfile')->with('success','Profile updated successfully');
+        if (!empty($request->image)) {
+            $image = $request->image;
+            $extension = $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $extension;
+
+            $image->move(public_path('userUploads/profilePicture'), $imageName);
+            $user->image = $imageName;
+            $user->save();
+        }
+
+        return redirect()->route('account.showProfile')->with('success', 'Profile updated successfully');
     }
 
-    public function logOut(){
+    public function logOut()
+    {
         Auth::logout();
         return redirect()->route('account.showLogin');
     }

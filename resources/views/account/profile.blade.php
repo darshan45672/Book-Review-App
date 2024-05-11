@@ -55,7 +55,7 @@
                     Profile
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('account.userProfileUpdate') }}" method="POST">
+                    <form action="{{ route('account.userProfileUpdate') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -77,7 +77,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Image</label>
-                            <input type="file" name="image" id="image" class="form-control">
+                            <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">
+                            @error('image')
+                            <p class="invalid-feedback">{{ $message }}</p>
+                            @enderror
                             <img src="images/profile-img-1.jpg" class="img-fluid mt-4" alt="Luna John">
                         </div>
                         <button class="btn btn-primary mt-2">Update</button>
