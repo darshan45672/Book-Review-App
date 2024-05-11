@@ -6,18 +6,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-5">
-                @if (Session::has('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ Session::get('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>  
-                @endif
-                @if (Session::has('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        {{ Session::get('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>  
-                @endif
+                @include('layouts.sessionMessage')
                 <div class="card border border-light-subtle rounded-4">
                     <div class="card-body p-3 p-md-4 p-xl-5">
                         <div class="row">

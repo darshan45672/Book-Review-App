@@ -17,7 +17,7 @@ class AccountController extends Controller
     public function userRegister( Request $request ){
         $validator = Validator::make($request->all(), [
             'name' => 'required | min:3',
-            'email' => 'required|email',
+            'email' => 'required|email | unique:users',
             'password' => 'required| confirmed|min:8',
             'password_confirmation' => 'required',
         ]);
@@ -59,7 +59,31 @@ class AccountController extends Controller
     }
 
     public function showProfile(){
-        return view('account.profile');
+        $user = User::find(Auth::user()->id);
+        // dd($user);
+
+        return view('account.profile',[
+            'user' => $user,
+        ]);
+    }
+
+    public function userProfileUpdate(Request $request){
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|min:3',
+            'email' => 'required | email |unique:users,email,'.Auth::user()->id.',id'
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            return redirect()->route('account.showProfile')->withInput()->withErrors($validator);
+        }
+
+        $user = User::find(Auth::user()->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->save();
+
+        return redirect()->route('account.showProfile')->with('success','Profile updated successfully');
     }
 
     public function logOut(){
