@@ -12,10 +12,13 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center mb-3">
-                        <img src="images/profile-img-1.jpg" class="img-fluid rounded-circle" alt="Luna John">
+                        @if (Auth::user()->image != "")
+                            <img src="{{ asset('userUploads/profilePicture/'.Auth::user()->image) }}" class="img-fluid rounded-circle" alt="{{ Auth::user()->name }}" style="width: 150px; height: 150px;"> 
+                        @endif
+                        {{-- <img src="images/profile-img-1.jpg" class="img-fluid rounded-circle" alt="Luna John"> --}}
                     </div>
                     <div class="h5 text-center">
-                        <strong>{{ $user->email }}</strong>
+                        <strong>{{ $user->name }}</strong>
                         <p class="h6 mt-2 text-muted">5 Reviews</p>
                     </div>
                 </div>
@@ -55,7 +58,7 @@
                     Profile
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('account.userProfileUpdate') }}" method="POST">
+                    <form action="{{ route('account.userProfileUpdate') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -77,7 +80,10 @@
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Image</label>
-                            <input type="file" name="image" id="image" class="form-control">
+                            <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror">
+                            @error('image')
+                            <p class="invalid-feedback">{{ $message }}</p>
+                            @enderror
                             <img src="images/profile-img-1.jpg" class="img-fluid mt-4" alt="Luna John">
                         </div>
                         <button class="btn btn-primary mt-2">Update</button>
