@@ -5,18 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class BookController extends Controller
 {
-    public function index(){
-        return view('books.list');
+    public function index()
+    {
+        $books = Book::orderBy('created_at', 'DESC')->paginate(3);
+
+        return view('books.list',[
+            'books' => $books,
+        ]);
     }
 
-    public function create(){
+    public function create()
+    {
         return view('books.createBook');
     }
 
-    public function store( Request $request){
+    public function store(Request $request)
+    {
 
         $rules = [
             'title' => 'required|min:3',
@@ -24,7 +33,7 @@ class BookController extends Controller
             'status' => 'required',
         ];
 
-        if(!empty($request->image)){
+        if (!empty($request->image)) {
             $rules['image'] = 'mimes:jpeg,jpg,png,gif|max:2048';
         }
 
@@ -42,18 +51,39 @@ class BookController extends Controller
         $book->status = $request->status;
         $book->save();
 
+        if (!empty($request->image)) {
+            # code...
+            // File::delete(public_path('userUploads/profilePicture/'.$user->image));
+            $image = $request->image;
+            $extension = $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $extension;
+
+            $image->move(public_path('userUploads/bookPicture'), $imageName);
+
+            $book->image = $imageName;
+            $book->save();
+
+            $manager = new ImageManager(Driver::class);
+            $img = $manager->read(public_path('userUploads/bookPicture/'.$imageName));
+            $img->resize(990,990);
+            $img->save(public_path('userUploads/bookPicture/'.$imageName));
+        }
+
         return redirect()->route('books.index')->with('success', "Books added successfully!");
     }
 
-    public function edit(){
+    public function edit()
+    {
 
     }
 
-    public function update(){
+    public function update()
+    {
 
     }
 
-    public function destroy(){
+    public function destroy()
+    {
 
     }
 }
