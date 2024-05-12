@@ -51,7 +51,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="author" class="form-label @error('author') is-invalid @enderror ">Author</label>
-                            <input type="text" value="{{ old('author') }} "class="form-control" placeholder="Author" name="author" id="author" />
+                            <input type="text" placeholder="Author" value="{{ old('author') }}"class="form-control" name="author" id="author" />
                             @error('author')
                             <p class="invalid-feedback"> {{ $message }}</p>
                             @enderror
