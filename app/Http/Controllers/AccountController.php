@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
@@ -76,21 +77,15 @@ class AccountController extends Controller
 
     public function userProfileUpdate(Request $request)
     {
-
+        $rules = [
+            'name' => 'required|min:3',
+            'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id',
+        ];
         // dd($request->image);
 
         if (!empty($request->image)) {
             # code...
-            $rules = [
-                'name' => 'required|min:3',
-                'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id',
-                'image' => 'mimes:jpeg,jpg,png,gif|max:2048'
-            ];
-        } else {
-            $rules = [
-                'name' => 'required|min:3',
-                'email' => 'required | email |unique:users,email,' . Auth::user()->id . ',id'
-            ];
+            $rules['image'] = 'mimes:jpeg,jpg,png,gif|max:2048';
         }
 
         $validator = Validator::make($request->all(), $rules);
@@ -107,6 +102,9 @@ class AccountController extends Controller
         $user->save();
 
         if (!empty($request->image)) {
+
+            File::delete(public_path('userUploads/profilePicture/'.$user->image));
+
             $image = $request->image;
             $extension = $image->getClientOriginalExtension();
             $imageName = time() . '.' . $extension;
