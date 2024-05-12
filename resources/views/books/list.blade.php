@@ -46,8 +46,9 @@
                         <a href="{{ route('books.create') }}" class="btn btn-primary">Add Book</a>
                         <form action="" method="GET">
                             <div class="d-flex gap-3">
-                                <input type="text" class="form-control" name="keyword" placeholder="Keyword">
+                                <input type="text" value="{{ Request::get('keyword') }}" class="form-control" name="keyword" placeholder="Keyword">
                                 <button type="submit" class="btn btn-primary"> Search</button>
+                                <a href="{{ route('books.index') }}" class="btn btn-secondary">Clear</a>
                             </div>
                         </form>
                     </div>

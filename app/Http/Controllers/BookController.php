@@ -10,9 +10,15 @@ use Intervention\Image\Drivers\Gd\Driver;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index( Request $request)
     {
-        $books = Book::orderBy('created_at', 'DESC')->paginate(3);
+        $books = Book::orderBy('created_at', 'DESC');
+
+        if (!empty($request->keyword)) {
+            # code...
+            $books->where('title','like','%'.$request->keyword.'%');
+        }
+       $books = $books->paginate(10);
 
         return view('books.list',[
             'books' => $books,
