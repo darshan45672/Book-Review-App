@@ -143,7 +143,7 @@ class BookController extends Controller
 
         if ($book == null) {
             # code...
-            return session()->flash('error', 'Book not found');
+            return redirect()->route('books.index')->with('error', "Book not found");
             // return response()->json([
             //     'status' => false,
             //     'message' => 'Book not found'
@@ -152,7 +152,7 @@ class BookController extends Controller
             File::delete(public_path('userUploads/bookPicture/'.$book->image));
             $book->delete();
 
-            return session()->flash('success', 'Book deleted successfully!');
+            return redirect()->route('books.index')->with('success', "Book deleted successfully!");
             // return response()->json([
             //     'status' => true,
             //     'message' => 'Book deleted successfully!'
