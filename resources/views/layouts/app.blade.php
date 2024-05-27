@@ -17,7 +17,7 @@
     <div class="container-fluid shadow-lg header">
         <div class="container">
             <div class="d-flex justify-content-between">
-                <h1 class="text-center"><a href="index.html" class="h3 text-white text-decoration-none">Book Review App</a></h1>
+                <h1 class="text-center"><a href="{{ route('home') }}" class="h3 text-white text-decoration-none">Book Review App</a></h1>
                 <div class="d-flex align-items-center navigation">
                     @if (Auth::check())
                         <a href="{{ route('account.showProfile') }}" class="text-white">My Account</a>
