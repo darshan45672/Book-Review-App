@@ -37,8 +37,8 @@
                             @endif
                             </a>
                         <div class="card-body">
-                            <h3 class="h4 heading"><a href="#">Atomic Habits</a></h3>
-                            <p>by James Clear</p>
+                            <h3 class="h4 heading"><a href="#">{{ $book->title }}</a></h3>
+                            <p>by {{ $book->author }}</p>
                             <div class="star-rating d-inline-flex ml-2" title="">
                                 <span class="rating-text theme-font theme-yellow">5.0</span>
                                 <div class="star-rating d-inline-flex mx-2" title="">
