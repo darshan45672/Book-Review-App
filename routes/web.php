@@ -2,11 +2,10 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'user'], function () {
     Route::group(['middleware' => 'guest'], function () {
