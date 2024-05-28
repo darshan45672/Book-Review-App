@@ -7,21 +7,24 @@
             <div class="d-flex justify-content-between">
                 <h2 class="mb-3">Books</h2>
                 <div class="mt-2">
-                    <a href="#" class="text-dark">Clear</a>
+                    <a href="{{ route('home') }}" class="btn btn-secondary">Clear</a>
                 </div>
             </div>
             <div class="card shadow-lg border-0">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-11 col-md-11">
-                            <input type="text" class="form-control form-control-lg" placeholder="Search by title">
-                        </div>
-                        <div class="col-lg-1 col-md-1">
-                            <button class="btn btn-primary btn-lg w-100"><i
-                                    class="fa-solid fa-magnifying-glass"></i></button>
+                <form action="" method="get">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-11 col-md-11">
+                                <input type="text" value="{{ Request::get('keyword') }}" name="keyword" class="form-control form-control-lg" placeholder="Search by title">
+                            </div>
+                            <div class="col-lg-1 col-md-1">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="row mt-4">
 
@@ -33,9 +36,9 @@
                             @if ($book->image != '')
                             <img src="{{ asset('userUploads/bookPicture/'.$book->image) }}" alt="" class="card-img-top">
                             @else
-                            <img src="https://placehold.co/600x400" alt="" class="card-img-top">
+                            <img src="https://placehold.co/990x990" alt="" class="card-img-top">
                             @endif
-                            </a>
+                        </a>
                         <div class="card-body">
                             <h3 class="h4 heading"><a href="#">{{ $book->title }}</a></h3>
                             <p>by {{ $book->author }}</p>
