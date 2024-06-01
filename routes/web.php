@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/book/{id}', [HomeController::class, 'showDetail'])->name('book.detail');
 
 Route::group(['prefix' => 'user'], function () {
     Route::group(['middleware' => 'guest'], function () {
