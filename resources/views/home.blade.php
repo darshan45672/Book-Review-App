@@ -32,7 +32,7 @@
                 @foreach ($books as $book)
                 <div class="col-md-4 col-lg-3 mb-4">
                     <div class="card border-0 shadow-lg">
-                        <a href="detail.html">
+                        <a href="{{ route('book.detail', $book->id) }}">
                             @if ($book->image != '')
                             <img src="{{ asset('userUploads/bookPicture/'.$book->image) }}" alt="" class="card-img-top">
                             @else
