@@ -92,6 +92,10 @@
                             </div>
                         </div>
                         @endforeach
+                        @else
+                        <center>
+                            <p>No books available</p>
+                        </center>
                         @endif
 
                     </div>
