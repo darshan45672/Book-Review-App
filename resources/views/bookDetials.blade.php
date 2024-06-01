@@ -107,11 +107,12 @@
                             <div class="d-flex justify-content-between">
                                 <h3>Reviews</h3>
                                 <div>
+                                    @if (Auth::check())    
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop">
                                         Add Review
                                     </button>
-
+                                    @endif
                                 </div>
                             </div>
 
