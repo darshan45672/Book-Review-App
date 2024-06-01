@@ -22,4 +22,21 @@ class HomeController extends Controller
             'books' => $books,
         ]);    
     }
+
+    public function showDetail($id){
+        $book = Book::findOrFail($id);
+
+        if ($book->status == 0) {
+            # code...
+            abort(404);
+        }
+
+        $relatedBooks = Book::where('status', 1)->where('id','!=',$id)->take(3)->inRandomOrder()->get();
+        // dd($relatedBooks);  
+
+        return view('bookDetials',[
+            'book' => $book,
+            'relatedBooks' => $relatedBooks,
+        ]);
+    }
 }
