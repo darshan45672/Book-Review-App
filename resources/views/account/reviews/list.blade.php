@@ -7,7 +7,7 @@
            @include('layouts.sideBar')                
         </div>
         <div class="col-md-9">
-            
+            @include('layouts.sessionMessage')
             <div class="card border-0 shadow">
                 <div class="card-header  text-white">
                     My Reviews
@@ -50,7 +50,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="edit-review.html" class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i>
+                                            <a href="{{ route('account.review.edit',$review->id) }}" class="btn btn-primary btn-sm"><i class="fa-regular fa-pen-to-square"></i>
                                             </a>
                                             <a href="#" class="btn btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
                                         </td>

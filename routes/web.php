@@ -33,5 +33,7 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/books/delete/{id}', [BookController::class, 'destroy'])->name('books.destroy');
         Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
         Route::get('/reviews',[ReviewController::class, 'index'])->name('account.reviews');
+        Route::get('/reviews/{id}',[ReviewController::class, 'edit'])->name('account.review.edit');
+        Route::post('/reviews/update/{id}',[ReviewController::class, 'update'])->name('account.review.update');
     });
 });
