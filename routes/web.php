@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -31,5 +32,6 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/books/edit/{id}', [BookController::class, 'update'])->name('books.update');
         Route::post('/books/delete/{id}', [BookController::class, 'destroy'])->name('books.destroy');
         Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
+        Route::get('/reviews',[ReviewController::class, 'index'])->name('account.reviews');
     });
 });
