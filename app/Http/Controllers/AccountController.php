@@ -59,7 +59,7 @@ class AccountController extends Controller
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect()->route('account.showProfile');
+            return redirect()->route('account.showProfile')->with('success','Logged In successfully');
         } else {
             return redirect()->route('account.showLogin')->with('error', 'Either email/password is incorrect');
         }
@@ -126,6 +126,6 @@ class AccountController extends Controller
     public function logOut()
     {
         Auth::logout();
-        return redirect()->route('account.showLogin');
+        return redirect()->route('account.showLogin')->with('success', "Logged Out Sucessfully!");
     }
 }
