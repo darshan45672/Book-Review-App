@@ -16,6 +16,7 @@
                     @endif
                 </div>
                 <div class="col-md-8">
+                    @include('layouts.sessionMessage')
                     <h3 class="h2 mb-3">{{ $book->title }}</h3>
                     <div class="h4 text-muted">{{ $book->author }}</div>
                     <div class="star-rating d-inline-flex ml-2" title="">
@@ -58,6 +59,7 @@
                         @foreach ($relatedBooks as $related)
                         <div class="col-md-4 col-lg-4 mb-4">
                             <div class="card border-0 shadow-lg">
+                                <a href="{{ route('book.detail', $related->id) }}" class="text-decoration-none text-dark">
                                 @if ($book->image != '')
                                 <img src="{{ asset('userUploads/bookPicture/'.$related->image) }}" alt=""
                                     class="card-img-top">
@@ -89,6 +91,7 @@
                                         <span class="theme-font text-muted">(0)</span>
                                     </div>
                                 </div>
+                            </a>
                             </div>
                         </div>
                         @endforeach
@@ -113,12 +116,12 @@
                                         Add Review
                                     </button>
                                     @endif --}}
-                                    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop">
                                         Add Review
-                                    </button> --}}
-                                    <a href="" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop" type="button" >aaa</a>
+                                    </button>
+                                    {{-- <a href="" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop" type="button" >aaa</a> --}}
                                 </div>
                             </div>
 

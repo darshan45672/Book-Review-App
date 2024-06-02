@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
@@ -53,7 +55,24 @@ class HomeController extends Controller
         if ($validator->fails()) {
             # code...
             // dd($validator);
-            return redirect()->route('book.detail', $id)->withErrors($validator)->withInput();
+            return redirect()->route('book.detail', $id)->withErrors($validator)->with('error', 'check the credentials');
         }
+
+        $reviewCount = Review::where('user_id', Auth::user()->id)->where('book_id', $id)->count();
+
+        if ($reviewCount > 0) {
+            # code...
+            // dd("greater count");
+            return redirect()->route('book.detail', $id)->with('error', 'You have already reviewed the book.');
+        }
+
+        $review = new Review();
+        $review->review = $request->review;
+        $review->rating = $request->rating;
+        $review->user_id = Auth::user()->id;
+        $review->book_id = $id;
+        $review->save();
+
+        return redirect()->route('book.detail', $id)->with('success', 'review submitted successfully');
     }
 }

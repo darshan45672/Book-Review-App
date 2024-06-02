@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/book/{id}', [HomeController::class, 'showDetail'])->name('book.detail');
-Route::post('/books/review/{id}', [HomeController::class, 'storeReview'])->name('store.Review');
+Route::post('/books/review/{id}', [HomeController::class, 'storeReview'])->middleware('auth')->name('store.Review');
 // Route::post('/books/review/{id}', [HomeController::class, 'storeReview'])->name('store.Review');
 
 Route::group(['prefix' => 'user'], function () {
