@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -38,5 +39,21 @@ class HomeController extends Controller
             'book' => $book,
             'relatedBooks' => $relatedBooks,
         ]);
+    }
+
+    public function storeReview(Request $request, $id){
+        // dd($request);
+        // dd($id);
+
+        $validator = Validator::make($request->all(),[
+            'review' => 'required | min:10',
+            'rating' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            # code...
+            // dd($validator);
+            return redirect()->route('book.detail', $id)->withErrors($validator)->withInput();
+        }
     }
 }

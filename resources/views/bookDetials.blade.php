@@ -107,12 +107,18 @@
                             <div class="d-flex justify-content-between">
                                 <h3>Reviews</h3>
                                 <div>
-                                    @if (Auth::check())    
+                                    {{-- @if (Auth::check())
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#staticBackdrop">
                                         Add Review
                                     </button>
-                                    @endif
+                                    @endif --}}
+                                    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        Add Review
+                                    </button> --}}
+                                    <a href="" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop" type="button" >aaa</a>
                                 </div>
                             </div>
 
@@ -249,29 +255,34 @@
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Review for <strong>Atomic Habits</strong></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form action="">
+            <form action="{{ route('store.Review', $book->id) }}" method="POST">
+                @csrf
+                <div class="modal-body">
                     <div class="mb-3">
-                        <label for="" class="form-label">Review</label>
-                        <textarea name="review" id="review" class="form-control" cols="5" rows="5"
+                        <label for="review" class="form-label">Review</label>
+                        <textarea name="review" id="review" value="{{ old('review') }}"
+                            class="form-control @error('review') is-invalid @enderror" cols="5" rows="5"
                             placeholder="Review"></textarea>
+                        @error('review')
+                        <p class="invalid-feedback"> {{ $message }}</p>
+                        @enderror
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Rating</label>
                         <select name="rating" id="rating" class="form-control">
                             <option value="1">1</option>
-                            <option value="">2</option>
-                            <option value="">3</option>
-                            <option value="">4</option>
-                            <option value="">5</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                     </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
