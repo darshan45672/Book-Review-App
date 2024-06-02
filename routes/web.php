@@ -3,10 +3,16 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/book/{id}', [HomeController::class, 'showDetail'])->name('book.detail');
+
+Route::group(['middleware' => 'auth'], function (){
+    Route::post('/books/review/{id}', [HomeController::class, 'storeReview'])->name('store.Review');
+});
+// Route::post('/books/review/{id}', [HomeController::class, 'storeReview'])->name('store.Review');
 
 Route::group(['prefix' => 'user'], function () {
     Route::group(['middleware' => 'guest'], function () {
@@ -26,5 +32,8 @@ Route::group(['prefix' => 'user'], function () {
         Route::post('/books/edit/{id}', [BookController::class, 'update'])->name('books.update');
         Route::post('/books/delete/{id}', [BookController::class, 'destroy'])->name('books.destroy');
         Route::post('/books/store', [BookController::class, 'store'])->name('books.store');
+        Route::get('/reviews',[ReviewController::class, 'index'])->name('account.reviews');
+        Route::get('/reviews/{id}',[ReviewController::class, 'edit'])->name('account.review.edit');
+        Route::post('/reviews/update/{id}',[ReviewController::class, 'update'])->name('account.review.update');
     });
 });
